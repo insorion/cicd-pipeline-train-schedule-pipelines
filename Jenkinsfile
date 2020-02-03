@@ -15,7 +15,7 @@ pipeline {
         }
         steps {
             withcredetials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                failOnError: true,
+                failOnError: "true",
                 continueOnError: false,
                 publishers: [
                     sshPublisherDesc(
