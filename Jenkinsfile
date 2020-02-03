@@ -10,8 +10,10 @@ pipeline {
       }
     }
            stage('deployToStagind') {
+             steps {
             withCredentials([sshUserPrivateKey(credentialsId: "mykeyid", keyFileVariable: 'keyfile')]) {
         sh "scp -i ${keyfile} dist/trainSchedule.zip ec2-user@3.20.126.40:/tmp"
+        }
       }
     }
   }
