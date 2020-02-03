@@ -10,34 +10,11 @@ pipeline {
       }
     }
     stage ('DeployToStagind') {
-        when {
-            branch 'master'
-        }
-        steps {
-            withcredetials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
-                failOnError="true"
-                continueOnError="false"
-                publishers: [
-                    sshPublisherDesc(
-                        configName: 'staging',
-                        sshCredentials: [
-                            username: "$USERNAME",
-                            encryptedPassphrase: "$USERPASS"
-                        ],
-                        transfers: [
-                            sshTransfer(
-                                sourceFiles: 'dist/trainSchedule.zip',
-                                removePrefix: 'dist/',
-                                remoteDirectory: '/tmp',
-                                
-                            )
-                        ]
-                    )
-                ]
-
-            }
-
-        }
+            withCredentials([sshUserPrivateKey(credentialsId: "mykeyid", keyFileVariable: 'keyfile')]) {
+       stage('deployToStagind') {
+        sh "scp -i ${keyfile} dist/trainSchedule.zip ec2-user@3.20.126.40:/tmp"
+       }   
+      }
     }
   }
 }
