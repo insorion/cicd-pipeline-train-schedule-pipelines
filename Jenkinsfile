@@ -12,7 +12,7 @@ pipeline {
            stage('deployToStagind') {
              steps {
             withCredentials([sshUserPrivateKey(credentialsId: "mykeyid", keyFileVariable: 'keyfile')]) {
-        sh "ssh -i ${keyfile}  centos@3.20.126.40:/tmp"
+        sh "ssh -i ${keyfile}  centos@3.20.126.40"
         }
       }
     }
